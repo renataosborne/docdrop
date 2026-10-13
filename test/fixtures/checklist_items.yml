@@ -1,0 +1,25 @@
+rental_id:
+  document_request: rental
+  name: Photo ID
+  position: 1
+  status: received
+  received_at: <%= 1.day.ago %>
+
+rental_address:
+  document_request: rental
+  name: Proof of address
+  position: 2
+  status: pending
+
+visa_passport:
+  document_request: visa
+  name: Passport scan
+  position: 1
+  status: received
+  received_at: <%= 2.days.ago %>
+
+others_contract:
+  document_request: others
+  name: Signed contract
+  position: 1
+  status: pending

@@ -1,0 +1,2 @@
+<%= turbo_stream.replace @checklist_item %>
+<%= turbo_stream.replace dom_id(@document_request, :progress), partial: "document_requests/progress", locals: { document_request: @document_request } %>

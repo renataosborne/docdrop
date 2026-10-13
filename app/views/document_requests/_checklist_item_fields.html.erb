@@ -1,0 +1,7 @@
+<li class="flex items-center gap-2" data-checklist-form-target="item" data-new-record="<%= form.object.new_record? %>" <%= "hidden" if form.object.marked_for_destruction? %>>
+  <%= form.label :name, "Document name", class: "sr-only" %>
+  <%= form.text_field :name, maxlength: 120, placeholder: "e.g. Proof of address", class: "form-input mt-0" %>
+  <%= form.hidden_field :id if form.object.persisted? %>
+  <%= form.hidden_field :_destroy %>
+  <button type="button" class="btn-secondary px-3" data-action="checklist-form#remove" aria-label="Remove item">✕</button>
+</li>

@@ -10,9 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_13_111355) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_13_112302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "checklist_items", force: :cascade do |t|
+    t.bigint "document_request_id", null: false
+    t.string "name", null: false
+    t.string "status", default: "pending", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "received_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_request_id", "position"], name: "index_checklist_items_on_document_request_id_and_position"
+    t.index ["document_request_id", "status"], name: "index_checklist_items_on_document_request_id_and_status"
+    t.index ["document_request_id"], name: "index_checklist_items_on_document_request_id"
+  end
+
+  create_table "document_requests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.string "client_name", null: false
+    t.string "client_email", null: false
+    t.date "due_on"
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "created_at"], name: "index_document_requests_on_user_id_and_created_at"
+    t.index ["user_id"], name: "index_document_requests_on_user_id"
+  end
 
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -32,5 +58,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_13_111355) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "checklist_items", "document_requests"
+  add_foreign_key "document_requests", "users"
   add_foreign_key "sessions", "users"
 end

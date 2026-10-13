@@ -1,0 +1,12 @@
+<li>
+  <%= link_to document_request, class: "block rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-brand-500 hover:shadow-sm" do %>
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h3 class="font-semibold"><%= document_request.title %></h3>
+      <% if document_request.due_on %>
+        <span class="text-xs <%= document_request.overdue? ? "font-semibold text-red-700" : "text-slate-500" %>">Due <%= l document_request.due_on, format: :long %></span>
+      <% end %>
+    </div>
+    <p class="mt-0.5 text-sm text-slate-600"><%= document_request.client_name %></p>
+    <div class="mt-4"><%= render "document_requests/progress", document_request: document_request %></div>
+  <% end %>
+</li>

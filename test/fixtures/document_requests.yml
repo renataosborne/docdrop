@@ -1,0 +1,19 @@
+rental:
+  user: one
+  title: Rental application documents
+  client_name: Taylor Client
+  client_email: taylor@example.com
+  due_on: <%= 2.weeks.from_now.to_date %>
+  message: Please upload clear scans.
+
+visa:
+  user: one
+  title: Visa paperwork
+  client_name: Morgan Client
+  client_email: morgan@example.com
+
+others:
+  user: two
+  title: Someone else's request
+  client_name: Private Client
+  client_email: private@example.com

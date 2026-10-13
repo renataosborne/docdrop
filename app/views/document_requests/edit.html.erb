@@ -1,0 +1,10 @@
+<% content_for :title, "Edit request · DocDrop" %>
+
+<div class="mx-auto max-w-2xl">
+  <%= link_to "← Back to request", @document_request, class: "text-link text-sm" %>
+  <h1 class="mt-2 text-3xl font-bold">Edit request</h1>
+
+  <div class="mt-6">
+    <%= render "form", document_request: @document_request %>
+  </div>
+</div>

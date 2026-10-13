@@ -1,0 +1,7 @@
+<% if document_request.complete? %>
+  <span class="rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-semibold text-brand-700">Complete</span>
+<% elsif document_request.overdue? %>
+  <span class="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-700">Overdue</span>
+<% else %>
+  <span class="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700">Pending</span>
+<% end %>

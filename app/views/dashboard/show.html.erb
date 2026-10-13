@@ -5,20 +5,30 @@
     <p class="text-sm font-medium text-brand-600">Dashboard</p>
     <h1 class="mt-1 text-3xl font-bold">Hi, <%= @user.first_name %></h1>
   </div>
+  <%= link_to "+ New request", new_document_request_path, class: "btn-primary" %>
 </div>
 
-<div class="mt-8 grid gap-4 sm:grid-cols-3">
-  <% [ [ "Requests", 0 ], [ "Pending", 0 ], [ "Complete", 0 ] ].each do |label, count| %>
-    <div class="rounded-2xl border border-slate-200 bg-white p-5">
+<nav class="mt-8 grid gap-4 sm:grid-cols-3" aria-label="Filter requests">
+  <% { "all" => "Requests", "pending" => "Pending", "complete" => "Complete" }.each do |filter, label| %>
+    <%= link_to root_path(status: (filter unless filter == "all")), id: "filter-#{filter}",
+          aria: { current: (@filter == filter ? "page" : nil) },
+          class: "rounded-2xl border bg-white p-5 transition #{@filter == filter ? "border-brand-500 ring-2 ring-brand-500/20" : "border-slate-200 hover:border-slate-300"}" do %>
       <p class="text-sm text-slate-600"><%= label %></p>
-      <p class="mt-1 text-3xl font-bold"><%= count %></p>
-    </div>
+      <p class="mt-1 text-3xl font-bold"><%= @counts[filter] %></p>
+    <% end %>
   <% end %>
-</div>
+</nav>
 
-<div class="card mt-6 text-center">
-  <h2 class="text-lg font-semibold">No document requests yet</h2>
-  <p class="mx-auto mt-1 max-w-md text-sm text-slate-600">
-    Soon you'll be able to create a request with a checklist, share a private upload link, and track what's still missing.
-  </p>
-</div>
+<% if @document_requests.any? %>
+  <ul class="mt-6 grid gap-4 md:grid-cols-2" id="document_requests">
+    <%= render @document_requests %>
+  </ul>
+<% elsif @counts["all"].zero? %>
+  <div class="card mt-6 text-center">
+    <h2 class="text-lg font-semibold">No document requests yet</h2>
+    <p class="mx-auto mt-1 max-w-md text-sm text-slate-600">Create a request with a checklist of the documents you need, then track what's still missing.</p>
+    <%= link_to "Create your first request", new_document_request_path, class: "btn-primary mt-5" %>
+  </div>
+<% else %>
+  <div class="card mt-6 text-center text-sm text-slate-600">No <%= @filter %> requests.</div>
+<% end %>

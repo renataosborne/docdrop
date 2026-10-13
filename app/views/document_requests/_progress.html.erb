@@ -1,0 +1,11 @@
+<div id="<%= dom_id(document_request, :progress) %>">
+  <div class="flex items-center justify-between text-sm">
+    <span class="font-medium"><%= document_request.received_count %> of <%= document_request.items_count %> received</span>
+    <%= render "document_requests/status_badge", document_request: document_request %>
+  </div>
+  <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="<%= document_request.progress_percent %>"
+       aria-label="Documents received">
+    <div class="h-full rounded-full bg-brand-500 transition-all" style="width: <%= document_request.progress_percent %>%"></div>
+  </div>
+</div>

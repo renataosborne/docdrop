@@ -1,0 +1,69 @@
+<%= form_with model: document_request, class: "space-y-6" do |form| %>
+  <% if document_request.errors.any? %>
+    <div id="error_explanation" role="alert" class="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+      <p class="font-semibold">Please fix the following:</p>
+      <ul class="mt-1 list-disc pl-5">
+        <% document_request.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card space-y-5">
+    <h2 class="text-lg font-semibold">Request details</h2>
+
+    <div>
+      <%= form.label :title, class: "form-label" %>
+      <%= form.text_field :title, required: true, maxlength: 120, placeholder: "e.g. Rental application documents", class: "form-input" %>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <%= form.label :client_name, "Client name", class: "form-label" %>
+        <%= form.text_field :client_name, required: true, maxlength: 100, class: "form-input" %>
+      </div>
+      <div>
+        <%= form.label :client_email, "Client email", class: "form-label" %>
+        <%= form.email_field :client_email, required: true, class: "form-input" %>
+      </div>
+    </div>
+
+    <div class="sm:w-1/2">
+      <%= form.label :due_on, "Due date (optional)", class: "form-label" %>
+      <%= form.date_field :due_on, min: Date.current, class: "form-input" %>
+    </div>
+
+    <div>
+      <%= form.label :message, "Message to client (optional)", class: "form-label" %>
+      <%= form.text_area :message, rows: 3, maxlength: 2000, placeholder: "Anything the client should know before uploading.", class: "form-input" %>
+    </div>
+  </div>
+
+  <div class="card" data-controller="checklist-form">
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h2 class="text-lg font-semibold">Checklist</h2>
+        <p class="text-sm text-slate-600">The documents you need from your client.</p>
+      </div>
+      <button type="button" class="btn-secondary" data-action="checklist-form#add">+ Add item</button>
+    </div>
+
+    <ol class="mt-5 space-y-3" data-checklist-form-target="list">
+      <%= form.fields_for :checklist_items, include_id: false do |item_form| %>
+        <%= render "document_requests/checklist_item_fields", form: item_form %>
+      <% end %>
+    </ol>
+
+    <template data-checklist-form-target="template">
+      <%= form.fields_for :checklist_items, ChecklistItem.new, child_index: "NEW_RECORD" do |item_form| %>
+        <%= render "document_requests/checklist_item_fields", form: item_form %>
+      <% end %>
+    </template>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-3">
+    <%= form.submit document_request.persisted? ? "Save changes" : "Create request", class: "btn-primary" %>
+    <%= link_to "Cancel", document_request.persisted? ? document_request : root_path, class: "btn-secondary" %>
+  </div>
+<% end %>
