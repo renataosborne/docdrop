@@ -38,7 +38,7 @@ class DocumentRequestsController < ApplicationController
   private
     # Scoping through the current user means another requester's request is a 404, never visible.
     def set_document_request
-      @document_request = Current.user.document_requests.includes(:checklist_items).find(params[:id])
+      @document_request = Current.user.document_requests.includes(checklist_items: { files_attachments: :blob }).find(params[:id])
     end
 
     def document_request_params

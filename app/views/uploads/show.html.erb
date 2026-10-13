@@ -1,0 +1,31 @@
+<% content_for :title, "#{@document_request.title} · Upload documents" %>
+
+<p class="text-sm font-medium text-brand-600"><%= @document_request.user.name %> has requested documents</p>
+<h1 class="mt-1 text-3xl font-bold"><%= @document_request.title %></h1>
+<p class="mt-2 text-slate-600">
+  Hi <%= @document_request.client_name.split.first %>, please upload each document below.
+  <% if @document_request.due_on %>
+    They're needed by <span class="font-medium text-ink"><%= l @document_request.due_on, format: :long %></span>.
+  <% end %>
+</p>
+
+<% if @document_request.message.present? %>
+  <div class="mt-5 rounded-lg border-l-4 border-brand-500 bg-white px-4 py-3 text-sm text-slate-700">
+    <%= simple_format @document_request.message %>
+  </div>
+<% end %>
+
+<div class="card mt-6">
+  <%= render "uploads/progress", document_request: @document_request %>
+
+  <ul class="mt-4 divide-y divide-slate-100" id="upload_checklist">
+    <% @document_request.checklist_items.each do |item| %>
+      <%= render "uploads/item", item: item, token: params[:token] %>
+    <% end %>
+  </ul>
+</div>
+
+<p class="mt-6 text-center text-xs text-slate-500">
+  Accepted: PDF, JPG, PNG, HEIC or WebP · up to <%= ChecklistItem::MAX_FILE_SIZE / 1.megabyte %> MB per file.
+  Your files are only visible to <%= @document_request.user.name %>.
+</p>

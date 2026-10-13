@@ -23,5 +23,9 @@ module Docdrop
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Uploaded client documents are private. Don't expose Active Storage's public blob URLs;
+    # files are only served through FilesController, which checks the requester owns them.
+    config.active_storage.draw_routes = false
   end
 end

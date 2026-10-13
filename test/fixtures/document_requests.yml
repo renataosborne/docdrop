@@ -5,15 +5,21 @@ rental:
   client_email: taylor@example.com
   due_on: <%= 2.weeks.from_now.to_date %>
   message: Please upload clear scans.
+  upload_token: rentaltoken1234567890abc
+  upload_expires_at: <%= 20.days.from_now %>
 
 visa:
   user: one
   title: Visa paperwork
   client_name: Morgan Client
   client_email: morgan@example.com
+  upload_token: visatoken1234567890abcde
+  upload_expires_at: <%= 20.days.from_now %>
 
 others:
   user: two
   title: Someone else's request
   client_name: Private Client
   client_email: private@example.com
+  upload_token: otherstoken1234567890abc
+  upload_expires_at: <%= 20.days.from_now %>

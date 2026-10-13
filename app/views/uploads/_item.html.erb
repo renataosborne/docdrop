@@ -1,0 +1,44 @@
+<li id="<%= dom_id(item, :upload) %>" class="py-4">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <span class="grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold <%= item.received? ? "bg-brand-500 text-white" : "border-2 border-slate-300 text-transparent" %>" aria-hidden="true">✓</span>
+      <div>
+        <p class="font-medium"><%= item.name %></p>
+        <p class="text-xs text-slate-500">
+          <% if item.files.attached? %>
+            Uploaded: <%= item.files.map { it.filename.to_s }.join(", ") %>
+          <% elsif item.received? %>
+            Received
+          <% else %>
+            Not uploaded yet
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <% if item.files.size < ChecklistItem::MAX_FILES %>
+      <%= form_with scope: :checklist_item, url: upload_item_path(token, item), multipart: true,
+            class: "flex flex-wrap items-center gap-2", data: { controller: "upload" } do |form| %>
+        <%= form.label :files, "Choose files for #{item.name}", for: dom_id(item, :files), class: "sr-only" %>
+        <%= form.file_field :files, multiple: true, required: true, id: dom_id(item, :files),
+              accept: ChecklistItem::ALLOWED_CONTENT_TYPES.keys.join(","),
+              data: { upload_target: "input", action: "change->upload#submit" },
+              class: "max-w-56 text-sm" %>
+        <button type="button" hidden data-upload-target="button" data-action="upload#choose"
+                class="<%= item.received? ? "btn-secondary" : "btn-primary" %> py-2"
+                aria-label="<%= item.received? ? "Add more files for" : "Upload" %> <%= item.name %>">
+          <%= item.received? ? "Add more" : "Upload" %>
+        </button>
+        <%= form.submit "Send", class: "btn-primary py-2", data: { upload_target: "submit" }, aria: { label: "Send files for #{item.name}" } %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if item.errors[:files].any? %>
+    <ul class="mt-3 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700" role="alert">
+      <% item.errors[:files].each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</li>

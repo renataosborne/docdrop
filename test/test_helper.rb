@@ -11,6 +11,7 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # Lets model tests build uploads from test/fixtures/files, like controller tests can.
+    include ActionDispatch::TestProcess::FixtureFile
   end
 end

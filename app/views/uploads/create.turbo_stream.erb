@@ -1,0 +1,2 @@
+<%= turbo_stream.replace dom_id(@checklist_item, :upload), partial: "uploads/item", locals: { item: @checklist_item, token: params[:token] } %>
+<%= turbo_stream.replace "upload_progress", partial: "uploads/progress", locals: { document_request: @document_request.reload } %>

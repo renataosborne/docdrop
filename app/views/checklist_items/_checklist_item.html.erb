@@ -1,21 +1,40 @@
-<li id="<%= dom_id(checklist_item) %>" class="flex items-center justify-between gap-4 py-3">
-  <div class="flex min-w-0 items-center gap-3">
-    <span class="grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold <%= checklist_item.received? ? "bg-brand-500 text-white" : "border-2 border-slate-300 text-transparent" %>" aria-hidden="true">✓</span>
-    <div class="min-w-0">
-      <p class="truncate font-medium <%= "text-slate-500 line-through decoration-slate-300" if checklist_item.received? %>"><%= checklist_item.name %></p>
-      <p class="text-xs text-slate-500">
-        <%= checklist_item.received? ? "Received #{time_ago_in_words(checklist_item.received_at)} ago" : "Waiting for client" %>
-      </p>
+<li id="<%= dom_id(checklist_item) %>" class="py-3">
+  <div class="flex items-center justify-between gap-4">
+    <div class="flex min-w-0 items-center gap-3">
+      <span class="grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold <%= checklist_item.received? ? "bg-brand-500 text-white" : "border-2 border-slate-300 text-transparent" %>" aria-hidden="true">✓</span>
+      <div class="min-w-0">
+        <p class="truncate font-medium"><%= checklist_item.name %></p>
+        <p class="text-xs text-slate-500">
+          <% if checklist_item.received? %>
+            <%= checklist_item.files.attached? ? "Uploaded" : "Marked received" %> <%= time_ago_in_words(checklist_item.received_at) %> ago
+          <% else %>
+            Waiting for client
+          <% end %>
+        </p>
+      </div>
     </div>
+
+    <% if checklist_item.received? %>
+      <%= button_to "Mark as missing", document_request_checklist_item_path(checklist_item.document_request, checklist_item),
+            method: :patch, params: { checklist_item: { status: "pending" } }, class: "btn-secondary shrink-0 py-1.5 text-xs",
+            aria: { label: "Mark #{checklist_item.name} as missing" } %>
+    <% else %>
+      <%= button_to "Mark received", document_request_checklist_item_path(checklist_item.document_request, checklist_item),
+            method: :patch, params: { checklist_item: { status: "received" } }, class: "btn-primary shrink-0 py-1.5 text-xs",
+            aria: { label: "Mark #{checklist_item.name} as received" } %>
+    <% end %>
   </div>
 
-  <% if checklist_item.received? %>
-    <%= button_to "Mark as missing", document_request_checklist_item_path(checklist_item.document_request, checklist_item),
-          method: :patch, params: { checklist_item: { status: "pending" } }, class: "btn-secondary shrink-0 py-1.5 text-xs",
-          aria: { label: "Mark #{checklist_item.name} as missing" } %>
-  <% else %>
-    <%= button_to "Mark received", document_request_checklist_item_path(checklist_item.document_request, checklist_item),
-          method: :patch, params: { checklist_item: { status: "received" } }, class: "btn-primary shrink-0 py-1.5 text-xs",
-          aria: { label: "Mark #{checklist_item.name} as received" } %>
+  <% if checklist_item.files.attached? %>
+    <ul class="mt-2 ml-9 space-y-1 text-sm">
+      <% checklist_item.files.each do |file| %>
+        <li class="flex items-center gap-2">
+          <span class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] uppercase text-slate-600"><%= file.filename.extension %></span>
+          <%= link_to file.filename.to_s, document_request_checklist_item_file_path(checklist_item.document_request, checklist_item, file),
+                class: "text-link truncate", data: { turbo: false } %>
+          <span class="text-xs text-slate-500"><%= number_to_human_size(file.byte_size) %></span>
+        </li>
+      <% end %>
+    </ul>
   <% end %>
 </li>

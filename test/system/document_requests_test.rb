@@ -31,7 +31,7 @@ class DocumentRequestsTest < ApplicationSystemTestCase
 
     click_on "Mark Payslip as received"
     assert_text "1 of 2 received"
-    assert_selector "#checklist", text: "Received less than a minute ago"
+    assert_selector "#checklist", text: "Marked received less than a minute ago"
 
     click_on "Mark Bank statement as received"
     assert_text "2 of 2 received"

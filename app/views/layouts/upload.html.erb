@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Upload documents · DocDrop" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%# The URL is the key to this page: keep it out of search engines and out of Referer headers. %>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-slate-50 text-ink antialiased">
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto flex max-w-3xl items-center justify-between px-5 py-4">
+        <span class="text-lg font-bold tracking-tight">Doc<span class="text-brand-600">Drop</span></span>
+        <span class="text-xs text-slate-500">Secure document upload</span>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-3xl px-5 py-10">
+      <% flash.each do |type, message| %>
+        <p id="<%= type %>" role="<%= type == "alert" ? "alert" : "status" %>"
+           class="mb-6 rounded-lg px-4 py-3 text-sm font-medium <%= type == "alert" ? "bg-red-50 text-red-700" : "bg-brand-50 text-brand-700" %>">
+          <%= message %>
+        </p>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

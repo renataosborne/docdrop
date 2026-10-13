@@ -1,0 +1,7 @@
+<div id="upload_progress">
+  <% if document_request.complete? %>
+    <p class="rounded-lg bg-brand-50 px-4 py-3 text-sm font-medium text-brand-700">All done, thank you! Every document has been received.</p>
+  <% else %>
+    <p class="text-sm font-medium"><%= document_request.received_count %> of <%= document_request.items_count %> documents received</p>
+  <% end %>
+</div>
