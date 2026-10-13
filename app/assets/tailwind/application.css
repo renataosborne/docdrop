@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-50: #eefaf6;
+  --color-brand-100: #d5f2e8;
+  --color-brand-500: #2b9a80;
+  --color-brand-600: #217a66;
+  --color-brand-700: #1b6253;
+  --color-ink: #1c2233;
+}
+
+@utility form-label { @apply block text-sm font-medium text-slate-700; }
+@utility form-input { @apply mt-1.5 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-ink shadow-sm placeholder:text-slate-400 focus:border-brand-500 focus:outline-2 focus:outline-brand-500/30; }
+@utility btn { @apply inline-flex cursor-pointer items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors; }
+@utility btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700; }
+@utility btn-secondary { @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50; }
+@utility card { @apply rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8; }
+@utility text-link { @apply font-medium text-brand-600 underline-offset-2 hover:underline; }

@@ -1,0 +1,24 @@
+<% content_for :title, "Dashboard · DocDrop" %>
+
+<div class="flex flex-wrap items-end justify-between gap-4">
+  <div>
+    <p class="text-sm font-medium text-brand-600">Dashboard</p>
+    <h1 class="mt-1 text-3xl font-bold">Hi, <%= @user.first_name %></h1>
+  </div>
+</div>
+
+<div class="mt-8 grid gap-4 sm:grid-cols-3">
+  <% [ [ "Requests", 0 ], [ "Pending", 0 ], [ "Complete", 0 ] ].each do |label, count| %>
+    <div class="rounded-2xl border border-slate-200 bg-white p-5">
+      <p class="text-sm text-slate-600"><%= label %></p>
+      <p class="mt-1 text-3xl font-bold"><%= count %></p>
+    </div>
+  <% end %>
+</div>
+
+<div class="card mt-6 text-center">
+  <h2 class="text-lg font-semibold">No document requests yet</h2>
+  <p class="mx-auto mt-1 max-w-md text-sm text-slate-600">
+    Soon you'll be able to create a request with a checklist, share a private upload link, and track what's still missing.
+  </p>
+</div>
